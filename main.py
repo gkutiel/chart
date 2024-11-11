@@ -1,5 +1,7 @@
+
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from bidi.algorithm import get_display
 
@@ -11,6 +13,7 @@ DPI = 100
 WIDTH_INCH = WIDTH_PXL / DPI
 HEIGHT_INCH = HEIGHT_PXL / DPI
 LABEL_PAD = 10
+DATA_SIZE = 15
 
 
 def text(s: str):
@@ -19,10 +22,23 @@ def text(s: str):
     return res
 
 
+def ticks(series, up=1):
+    return range(int(series.min()), int(series.max() + up))
+
+
 if __name__ == '__main__':
     print('Running main.py')
 
-    data = pd.read_csv('data.csv')
+    np.random.seed(42)
+    x = np.random.randint(1, 12, size=DATA_SIZE)
+    x = x.astype(float)
+    x /= 2
+    noise = np.random.normal(0, 0.5, size=DATA_SIZE)
+    y = 9 - 1 * x + noise
+
+    data = pd.DataFrame({'Coffee': x, 'Sleep': y})
+
+    # data = pd.read_csv('data.csv')
 
     font_prop = fm.FontProperties(fname='hebrew.otf')
 
@@ -33,27 +49,28 @@ if __name__ == '__main__':
 
     x = data['Coffee']
     y = data['Sleep']
-    plt.scatter(x, y)
+
+    plt.scatter(x, y, marker='x', color='#444')
 
     plt.xlabel(
-        text('קפה'),
+        text('כוסות קפה'),
         font_properties=font_prop,
         fontsize=FONT_SIZE,
         labelpad=LABEL_PAD)
 
     plt.ylabel(
-        text('שינה'),
+        text('שעות שינה'),
         font_properties=font_prop,
         fontsize=FONT_SIZE,
         labelpad=LABEL_PAD)
 
     plt.xticks(
-        range(x.min(), x.max() + 1),
+        ticks(x),
         font_properties=font_prop,
         fontsize=FONT_SIZE)
 
     plt.yticks(
-        range(y.min(), y.max() + 1),
+        ticks(y, up=2),
         font_properties=font_prop,
         fontsize=FONT_SIZE)
 
