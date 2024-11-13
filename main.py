@@ -33,8 +33,8 @@ if __name__ == '__main__':
     x = np.random.randint(1, 12, size=DATA_SIZE)
     x = x.astype(float)
     x /= 2
-    noise = np.random.normal(0, 0.5, size=DATA_SIZE)
-    y = 9 - 1 * x + noise
+    noise = np.random.normal(0, 0.3, size=DATA_SIZE)
+    y = 9 - .5 * x + noise
 
     data = pd.DataFrame({'Coffee': x, 'Sleep': y})
 
